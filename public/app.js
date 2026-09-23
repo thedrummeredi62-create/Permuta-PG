@@ -1,4 +1,4 @@
-const cfg=window.PERMUTA_CONFIG||{};const sb=supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY);let session=null,me=null,wallet=null,proposalTab='received',reportingOfferId=null,reportingUserId=null;const $=id=>document.getElementById(id),esc=v=>String(v||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])),money=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const cfg=window.PERMUTA_CONFIG||{};const sb=supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY);let session=null,me=null,wallet=null,proposalTab='received',marketMode='comum',pendingBusinessTarget='explore',reportingOfferId=null,reportingUserId=null;const $=id=>document.getElementById(id),esc=v=>String(v||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])),money=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 
 let publishImageFiles=[];
 let editingOfferId=null;
@@ -170,7 +170,43 @@ function moveGallery(step){
 }
 function closeOfferGallery(){$('imageGalleryModal')?.classList.add('hide')}
 
-function go(id){['home','empresario','auth','explore','publish','inbox','account','admin'].forEach(x=>{const el=$(x);if(el)el.classList.toggle('hide',x!==id)});if(id==='explore')loadOffers();if(id==='inbox'&&session)loadInbox();if(id==='account'&&session)loadAccount();if(id==='admin'&&session)loadAdmin();scrollTo(0,0)}function need(id){session?go(id):go('auth')}
+function go(id){setMarketMode(marketMode);['home','empresario','auth','explore','publish','inbox','account','admin'].forEach(x=>{const el=$(x);if(el)el.classList.toggle('hide',x!==id)});if(id==='explore')loadOffers();if(id==='inbox'&&session)loadInbox();if(id==='account'&&session)loadAccount();if(id==='admin'&&session)loadAdmin();scrollTo(0,0)}function need(id){session?go(id):go('auth')}
+function setMarketMode(mode){
+  marketMode=mode==='empresarial'?'empresarial':'comum';
+  if($('exploreModeTag'))$('exploreModeTag').textContent=marketMode==='empresarial'?'PERMUTAS ENTRE EMPRESAS':'PERMUTAS EM PONTA GROSSA';
+  if($('exploreModeTitle'))$('exploreModeTitle').textContent=marketMode==='empresarial'?'🏢 Explorar oportunidades B2B':'🔎 Encontre quem quer trocar';
+  if($('publishModeTag'))$('publishModeTag').textContent=marketMode==='empresarial'?'PUBLICAR PARA EMPRESAS':'CRIAR OFERTA';
+  if($('publishModeTitle'))$('publishModeTitle').textContent=marketMode==='empresarial'?'🏢 Publique uma oportunidade empresarial':'🔄 Publique o que você tem';
+  if($('proposalModeTitle'))$('proposalModeTitle').textContent=marketMode==='empresarial'?'🤝 Propostas empresariais':'🤝 Propostas';
+}
+function cleanCnpj(v){return String(v||'').replace(/\D/g,'')}
+function validCnpjDigits(v){
+  const c=cleanCnpj(v); if(c.length!==14||/^(\d)\1{13}$/.test(c))return false;
+  const calc=(base,factors)=>{let sum=0;for(let i=0;i<factors.length;i++)sum+=Number(base[i])*factors[i];const r=sum%11;return r<2?0:11-r};
+  const d1=calc(c,[5,4,3,2,9,8,7,6,5,4,3,2]); const d2=calc(c,[6,5,4,3,2,9,8,7,6,5,4,3,2]);
+  return Number(c[12])===d1&&Number(c[13])===d2;
+}
+async function openBusinessArea(target='explore'){
+  pendingBusinessTarget=target;
+  if(!session){go('auth');return}
+  await hydrate();
+  if(!me?.cnpj){
+    $('businessGate')?.classList.remove('hide');
+    return;
+  }
+  setMarketMode('empresarial');go(target);
+}
+function closeBusinessGate(){$('businessGate')?.classList.add('hide')}
+async function activateBusiness(){
+  if(!session)return go('auth');
+  const cnpj=cleanCnpj($('businessCnpj')?.value);
+  const name=$('businessName')?.value?.trim()||null;
+  if(!validCnpjDigits(cnpj)){ $('businessGateMsg').textContent='Informe um CNPJ válido.'; return; }
+  $('businessGateMsg').textContent='Validando cadastro...';
+  const {error}=await sb.from('profiles').update({cnpj,business_name:name,account_type:'empresa'}).eq('id',session.user.id);
+  if(error){$('businessGateMsg').textContent=error.code==='23505'?'Este CNPJ já está vinculado a outra conta.':error.message;return}
+  await hydrate(); closeBusinessGate(); setMarketMode('empresarial'); go(pendingBusinessTarget||'explore');
+}
 async function init(){const {data}=await sb.auth.getSession();session=data.session;await hydrate();await loadOffers();sb.auth.onAuthStateChange(async(_,s)=>{session=s;await hydrate()})}
 async function hydrate(){
   if(!session){
@@ -209,7 +245,8 @@ async function publishOffer(){
     open_to_proposals:$('open').value==='true',
     accepts_cash_difference:$('cash').value==='true',
     description:$('desc').value.trim(),
-    city:'Ponta Grossa'
+    city:'Ponta Grossa',
+    market_scope:marketMode
   };
 
   if(!payload.title)return $('pubMsg').textContent='Informe o que você tem para oferecer.';
@@ -255,7 +292,8 @@ async function publishOffer(){
 async function loadOffers(){
   let q=sb.from('offers')
     .select('id,user_id,offer_type,title,description,reference_value,looking_for,open_to_proposals,accepts_cash_difference,city,status,created_at,profiles!offers_profile_id_fkey(display_name),offer_images(storage_path,position)')
-    .eq('status','ativo');
+    .eq('status','ativo')
+    .eq('market_scope',marketMode);
 
   const wanted=$('search')?.value?.trim();
   const have=$('haveSearch')?.value?.trim();
@@ -460,12 +498,20 @@ async function loadInbox(){
     ?await loadReceived()
     :await loadSent();
 }
+async function businessOfferIds(){
+  const {data,error}=await sb.from('offers').select('id').eq('market_scope',marketMode);
+  if(error){console.error(error);return []}
+  return (data||[]).map(x=>x.id);
+}
 
 async function loadReceived(){
+  const ids=await businessOfferIds();
+  if(!ids.length){$('proposalList').innerHTML='<div class="panel"><p class="muted">Nenhuma proposta neste ambiente.</p></div>';return}
   const {data,error}=await sb
     .from('proposal_inbox')
     .select('*')
     .eq('offer_owner_id',session.user.id)
+    .in('offer_id',ids)
     .order('created_at',{ascending:false});
 
   if(error){
@@ -555,11 +601,14 @@ async function loadReceived(){
 }
 
 async function loadSent(){
+  const ids=await businessOfferIds();
+  if(!ids.length){$('proposalList').innerHTML='<div class="panel"><p class="muted">Nenhuma proposta neste ambiente.</p></div>';return}
 
   const {data,error}=await sb
     .from('proposal_inbox')
     .select('*')
     .eq('from_user_id',session.user.id)
+    .in('offer_id',ids)
     .order('created_at',{ascending:false});
 
   if(error){
