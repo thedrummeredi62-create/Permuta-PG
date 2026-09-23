@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://permutapg.com.br/sitemap.xml
