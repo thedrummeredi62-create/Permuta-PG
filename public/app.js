@@ -293,12 +293,12 @@ async function publishOffer(){
   $('pubMsg').textContent=`✅ Oferta publicada.${imageWarning}`;
 
   await loadOffers();
-  setTimeout(()=>go('account'),650);
+  setTimeout(()=>{if(marketMode==='empresarial'){go('explore')}else{go('account')}},650);
 }
 
 async function loadOffers(){
   let q=sb.from('offers')
-    .select('id,user_id,offer_type,title,description,reference_value,looking_for,open_to_proposals,accepts_cash_difference,city,status,created_at,profiles!offers_profile_id_fkey(display_name),offer_images(storage_path,position)')
+    .select('id,user_id,offer_type,title,description,reference_value,looking_for,open_to_proposals,accepts_cash_difference,city,status,created_at,profiles!offers_profile_id_fkey(display_name,business_name,business_verified,business_category),offer_images(storage_path,position)')
     .eq('status','ativo')
     .eq('market_scope',marketMode);
 
@@ -412,7 +412,7 @@ function card(o){
 
     <div class="exchange-footer">
       <div class="offer-owner">
-        <span class="muted">Por: ${esc(o.profiles?.display_name||'Usuário')}</span>
+        <span class="muted">Por: ${esc(marketMode==='empresarial'?(o.profiles?.business_name||o.profiles?.display_name||'Empresa'):(o.profiles?.display_name||'Usuário'))}${marketMode==='empresarial'&&o.profiles?.business_verified?' ✓':''}</span>
         ${reputationLabel(o.user_id)}
       </div>
 
