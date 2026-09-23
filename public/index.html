@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Permuta PG</title>
-  <link rel="stylesheet" href="styles.css?v=20260923-emp1">
+  <link rel="stylesheet" href="styles.css?v=20260923-b2b2">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
 </head>
@@ -3693,9 +3693,9 @@ bARELcgUInEBNiAoJF8SAmKTQD3gP//Z
 
     <nav class="main-nav">
       <button onclick="go('home')">Início</button>
-      <button onclick="go('explore')">Explorar</button>
+      <button onclick="setMarketMode('comum');go('explore')">Explorar</button>
       <button onclick="go('empresario')">Empresário</button>
-      <button onclick="need('publish')">＋ Publicar</button>
+      <button onclick="openBusinessArea('publish')">＋ Publicar</button>
       <button onclick="need('inbox')">Propostas</button>
       <button onclick="need('account')">Minha conta</button>
       <button id="adminNav" class="hide" onclick="need('admin')">Admin</button>
@@ -3733,11 +3733,11 @@ bARELcgUInEBNiAoJF8SAmKTQD3gP//Z
         </p>
 
         <div class="hero-cta">
-          <button class="cta-primary" onclick="go('explore')">
+          <button class="cta-primary" onclick="openBusinessArea('explore')">
             ⌕ &nbsp; Explorar oportunidades
           </button>
 
-          <button class="cta-secondary" onclick="need('publish')">
+          <button class="cta-secondary" onclick="openBusinessArea('publish')">
             ＋ &nbsp; Publicar agora
           </button>
         </div>
@@ -3946,7 +3946,7 @@ bARELcgUInEBNiAoJF8SAmKTQD3gP//Z
       <h2>Veja o que está disponível agora</h2>
     </div>
 
-    <button onclick="go('explore')">Ver todas →</button>
+    <button onclick="openBusinessArea('explore')">Ver todas →</button>
   </div>
 
   <div id="recent" class="grid home-opportunities"></div>
@@ -4055,8 +4055,8 @@ bARELcgUInEBNiAoJF8SAmKTQD3gP//Z
         <h1>Transforme o que sua empresa tem em <span>poder de compra.</span></h1>
         <p>Produtos, serviços, capacidade ociosa e créditos do seu próprio negócio podem virar novas oportunidades com outras empresas de Ponta Grossa — preservando caixa.</p>
         <div class="emp-actions">
-          <button class="cta-primary" onclick="need('publish')">＋ Publicar oportunidade</button>
-          <button class="emp-outline" onclick="go('explore')">Explorar permutas</button>
+          <button class="cta-primary" onclick="openBusinessArea('publish')">＋ Publicar oportunidade</button>
+          <button class="emp-outline" onclick="openBusinessArea('explore')">Explorar empresas</button>
         </div>
       </div>
       <div class="emp-b2b-card">
@@ -4116,17 +4116,30 @@ bARELcgUInEBNiAoJF8SAmKTQD3gP//Z
       <span>ECONOMIA LOCAL EM MOVIMENTO</span>
       <h2>Antes de comprar, veja se dá para permutar.</h2>
       <p>Cadastre sua empresa, publique o que ela pode oferecer e encontre oportunidades dentro de Ponta Grossa.</p>
-      <button class="cta-primary" onclick="need('publish')">Começar uma permuta empresarial</button>
+      <button class="cta-primary" onclick="openBusinessArea('publish')">Começar uma permuta empresarial</button>
     </div>
   </div>
 </section>
 
+
+<div id="businessGate" class="business-gate hide">
+  <div class="business-gate-card">
+    <button class="business-gate-close" onclick="closeBusinessGate()">×</button>
+    <span class="tag">ACESSO EMPRESÁRIO</span>
+    <h2>Cadastre o CNPJ da sua empresa</h2>
+    <p class="muted">O ambiente Empresário é exclusivo para negócios identificados. Informe o CNPJ para liberar as permutas B2B.</p>
+    <div class="field"><label>CNPJ</label><input id="businessCnpj" inputmode="numeric" maxlength="18" placeholder="00.000.000/0000-00"></div>
+    <div class="field"><label>NOME DA EMPRESA <span class="optional-label">(OPCIONAL)</span></label><input id="businessName" placeholder="Nome fantasia ou razão social"></div>
+    <button class="p" onclick="activateBusiness()">Ativar acesso Empresário</button>
+    <p id="businessGateMsg"></p>
+  </div>
+</div>
 <!-- EXPLORAR -->
 <section id="explore" class="hide">
 
   <div class="explore-head">
-    <span class="tag">PERMUTAS EM PONTA GROSSA</span>
-    <h2>🔎 Encontre quem quer trocar</h2>
+    <span id="exploreModeTag" class="tag">PERMUTAS EM PONTA GROSSA</span>
+    <h2 id="exploreModeTitle">🔎 Encontre quem quer trocar</h2>
 
     <p class="muted">
       Procure o que você quer e, se quiser, diga também o que tem para oferecer.
@@ -4204,8 +4217,8 @@ bARELcgUInEBNiAoJF8SAmKTQD3gP//Z
 <section id="publish" class="hide">
 
   <div class="publish-head">
-    <span class="tag">CRIAR OFERTA</span>
-    <h2>🔄 Publique o que você tem</h2>
+    <span id="publishModeTag" class="tag">CRIAR OFERTA</span>
+    <h2 id="publishModeTitle">🔄 Publique o que você tem</h2>
 
     <p class="muted">
       Publique o que você <b>TEM</b> e diga o que gostaria de
@@ -4320,7 +4333,7 @@ bARELcgUInEBNiAoJF8SAmKTQD3gP//Z
 <!-- PROPOSTAS -->
 <section id="inbox" class="hide">
 
-  <h2>🤝 Propostas</h2>
+  <h2 id="proposalModeTitle">🤝 Propostas</h2>
 
   <div class="actions" style="margin-bottom:18px">
 
@@ -4891,7 +4904,7 @@ bARELcgUInEBNiAoJF8SAmKTQD3gP//Z
   Permuta PG · Ponta Grossa, PR
 </footer>
 
-<script src="app.js?v=20260923-emp1"></script>
+<script src="app.js?v=20260923-b2b2"></script>
 
 </body>
 </html>
