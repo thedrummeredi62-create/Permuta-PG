@@ -1,0 +1,10 @@
+.git
+.github
+.gitignore
+.assetsignore
+README.md
+config.example.js
+wrangler.jsonc
+package.json
+package-lock.json
+src
