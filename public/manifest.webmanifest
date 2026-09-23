@@ -1,0 +1,9 @@
+{
+  "name": "Permuta PG",
+  "short_name": "Permuta PG",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f8f7",
+  "theme_color": "#071d35",
+  "description": "Permutas entre pessoas e empresas em Ponta Grossa."
+}
