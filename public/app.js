@@ -178,6 +178,13 @@ function setMarketMode(mode){
   if($('publishModeTag'))$('publishModeTag').textContent=marketMode==='empresarial'?'PUBLICAR PARA EMPRESAS':'CRIAR OFERTA';
   if($('publishModeTitle'))$('publishModeTitle').textContent=marketMode==='empresarial'?'🏢 Publique uma oportunidade empresarial':'🔄 Publique o que você tem';
   if($('proposalModeTitle'))$('proposalModeTitle').textContent=marketMode==='empresarial'?'🤝 Propostas empresariais':'🤝 Propostas';
+  if($('search'))$('search').placeholder=marketMode==='empresarial'?'Ex.: serviço de marketing, manutenção, insumos':'Ex.: PlayStation 5';
+  if($('haveSearch'))$('haveSearch').placeholder=marketMode==='empresarial'?'Ex.: crédito em consumo, serviço contábil, produtos':'Ex.: iPhone 13';
+  if($('title'))$('title').placeholder=marketMode==='empresarial'?'Ex.: Crédito de R$ 2.000 no meu estabelecimento':'Ex.: PlayStation 5';
+  if($('want'))$('want').placeholder=marketMode==='empresarial'?'Ex.: Marketing digital para minha empresa':'Ex.: iPhone 13';
+  if($('publishExample'))$('publishExample').innerHTML=marketMode==='empresarial'
+    ?'💡 Exemplo empresarial: <b>Ofereço R$ 2.000 em crédito no meu estabelecimento</b> → <b>Procuro serviço de marketing digital</b>'
+    :'💡 Exemplo: <b>Tenho PlayStation 5</b> → <b>Procuro iPhone 13</b>';
 }
 function cleanCnpj(v){return String(v||'').replace(/\D/g,'')}
 function validCnpjDigits(v){
