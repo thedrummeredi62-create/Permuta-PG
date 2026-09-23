@@ -1,12 +1,9 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "delicate-bird-36b6",
-  "main": "src/index.js",
   "compatibility_date": "2026-09-23",
   "assets": {
     "directory": "./public",
-    "binding": "ASSETS",
-    "run_worker_first": ["/config.js"],
     "not_found_handling": "single-page-application"
   }
 }
