@@ -1780,3 +1780,9 @@ footer{
 .emp-final{margin-top:72px;text-align:center;background:#071d35;color:#fff;border-radius:22px;padding:50px 28px}.emp-final>span{font-size:10px;letter-spacing:1.5px;font-weight:950;color:#6bddaa}.emp-final h2{font-size:36px;margin:10px 0}.emp-final p{color:#c7d5df;margin:0 auto 24px;max-width:650px;line-height:1.6}
 @media(max-width:900px){.emp-hero-inner,.emp-how{grid-template-columns:1fr}.emp-resource-grid{grid-template-columns:1fr 1fr}.emp-example-grid{grid-template-columns:1fr}.emp-hero-inner{gap:35px}.emp-how{gap:28px}}
 @media(max-width:600px){.emp-hero-inner{padding:48px 18px}.emp-copy h1{font-size:40px}.emp-wrap{padding:48px 16px}.emp-resource-grid{grid-template-columns:1fr}.emp-how{padding:24px}.emp-intro h2,.emp-final h2{font-size:29px}.emp-actions>*{width:100%}}
+
+.business-gate{position:fixed;inset:0;background:rgba(4,19,34,.72);z-index:9999;display:grid;place-items:center;padding:20px}
+.business-gate.hide{display:none}.business-gate-card{width:min(520px,100%);background:#fff;border-radius:20px;padding:30px;box-shadow:0 24px 70px rgba(0,0,0,.3);position:relative}
+.business-gate-card h2{font-size:30px;margin:10px 0}.business-gate-card>p{line-height:1.55;margin-bottom:22px}.business-gate-card .field{margin:14px 0}.business-gate-card .p{width:100%;margin-top:8px}
+.business-gate-close{position:absolute;right:16px;top:14px;border:0;background:transparent;font-size:28px;color:#657486;cursor:pointer}
+#businessGateMsg{font-weight:800;margin:12px 0 0;color:#b42318}
