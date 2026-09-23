@@ -1762,3 +1762,21 @@ footer{
 .review-modal-card{width:min(520px,94vw)}
 .review-stars{font-size:34px;letter-spacing:3px;color:#f3b600;margin:2px 0 10px;line-height:1}
 @media(max-width:700px){.offer-owner{width:100%}.review-btn{width:100%}}
+/* EMPRESÁRIO */
+.empresario-page{background:#f5f8f7}
+.emp-hero{background:linear-gradient(125deg,#061d35 0%,#0a2947 58%,#0c6248 145%);color:#fff;overflow:hidden}
+.emp-hero-inner{max-width:1180px;margin:auto;padding:76px 28px;display:grid;grid-template-columns:1.2fr .8fr;gap:64px;align-items:center}
+.emp-copy{max-width:690px}.emp-kicker{display:inline-block;font-size:11px;font-weight:950;letter-spacing:1.8px;color:#77dfad;margin-bottom:18px}
+.emp-copy h1{font-size:clamp(42px,5vw,66px);line-height:1.02;letter-spacing:-2.2px;margin:0 0 22px}.emp-copy h1 span{color:#4fd18e}
+.emp-copy>p{font-size:18px;line-height:1.65;color:#d6e2ea;max-width:650px;margin:0}.emp-actions{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+.emp-outline{border:1px solid rgba(255,255,255,.34);background:transparent;color:#fff;border-radius:10px;padding:14px 20px;font-weight:900}
+.emp-b2b-card{background:#fff;color:#071d35;border-radius:20px;padding:28px;box-shadow:0 22px 60px rgba(0,0,0,.22)}
+.emp-card-label{font-size:10px;font-weight:950;letter-spacing:1.3px;color:#168a57}.emp-b2b-card h3{font-size:28px;margin:7px 0 22px}
+.emp-swap-example{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px}.emp-swap-example div{background:#f2f7f5;border:1px solid #dce9e3;border-radius:12px;padding:16px}.emp-swap-example b,.emp-swap-example span{display:block}.emp-swap-example b{font-size:11px}.emp-swap-example span{font-size:12px;color:#647386;margin-top:5px}.emp-swap-example i{font-style:normal;font-size:24px;color:#15935b}.emp-b2b-card small{display:block;color:#6b7887;line-height:1.5;margin-top:20px}
+.emp-wrap{max-width:1180px;margin:auto;padding:70px 28px 80px}.emp-intro{max-width:780px;margin-bottom:32px}.emp-intro h2{font-size:36px;letter-spacing:-1px;margin:10px 0}.emp-intro p{font-size:17px;color:#657486;line-height:1.65}.emp-intro.compact{margin-bottom:24px}
+.emp-resource-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.emp-resource-grid article,.emp-example-grid article{background:#fff;border:1px solid #dfe7e4;border-radius:15px;padding:23px}.emp-resource-grid article>span{font-size:11px;font-weight:950;color:#15935b}.emp-resource-grid h3{margin:13px 0 8px}.emp-resource-grid p,.emp-example-grid p{color:#687787;line-height:1.55;font-size:14px;margin:0}
+.emp-how{margin:72px 0;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;background:#fff;border:1px solid #dfe7e4;border-radius:20px;padding:42px}.emp-how-copy h2{font-size:32px;margin:10px 0 15px}.emp-how-copy p{color:#687787;line-height:1.65}.emp-steps{display:grid;gap:12px}.emp-steps>div{display:flex;align-items:center;gap:14px;padding:14px;background:#f4f8f6;border-radius:12px}.emp-steps b{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:#15935b;color:#fff}.emp-steps span{font-size:14px;color:#5f6f7e}.emp-steps strong{color:#071d35}
+.emp-example-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.emp-example-grid article{text-align:center}.emp-example-grid article b{display:block;font-size:18px}.emp-example-grid article i{display:block;font-style:normal;font-size:24px;color:#15935b;margin:14px}
+.emp-final{margin-top:72px;text-align:center;background:#071d35;color:#fff;border-radius:22px;padding:50px 28px}.emp-final>span{font-size:10px;letter-spacing:1.5px;font-weight:950;color:#6bddaa}.emp-final h2{font-size:36px;margin:10px 0}.emp-final p{color:#c7d5df;margin:0 auto 24px;max-width:650px;line-height:1.6}
+@media(max-width:900px){.emp-hero-inner,.emp-how{grid-template-columns:1fr}.emp-resource-grid{grid-template-columns:1fr 1fr}.emp-example-grid{grid-template-columns:1fr}.emp-hero-inner{gap:35px}.emp-how{gap:28px}}
+@media(max-width:600px){.emp-hero-inner{padding:48px 18px}.emp-copy h1{font-size:40px}.emp-wrap{padding:48px 16px}.emp-resource-grid{grid-template-columns:1fr}.emp-how{padding:24px}.emp-intro h2,.emp-final h2{font-size:29px}.emp-actions>*{width:100%}}
