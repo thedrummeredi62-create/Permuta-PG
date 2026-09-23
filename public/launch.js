@@ -52,16 +52,47 @@ function patchPublishFlow(){
  const msg=document.getElementById('pubMsg');if(!msg)return;new MutationObserver(()=>{if(window.marketMode==='empresarial'&&msg.textContent.includes('Oferta publicada')){setTimeout(()=>{if(window.marketMode==='empresarial'){go('explore');const o=document.getElementById('offers');o?.insertAdjacentHTML('beforebegin','<div class="launch-success">✓ Oportunidade empresarial publicada. Ela já está disponível no ambiente B2B.</div>')}},900)}}).observe(msg,{childList:true,subtree:true,characterData:true});
 }
 function patchAdmin(){
- const old=window.renderAdminUsers;if(!old)return;window.renderAdminUsers=function(rows){old(rows);setTimeout(()=>{const table=qs('#adminUsers table');if(!table)return;const th=table.querySelector('thead tr');if(th&&!th.querySelector('.activity-col'))th.insertAdjacentHTML('beforeend','<th class="activity-col">Atividade</th>');const rendered=qsa('tbody tr',table);rendered.forEach(tr=>{if(tr.querySelector('.activity-btn'))return;const name=tr.querySelector('td b')?.textContent.trim();const u=(rows||[]).find(x=>(x.display_name||'Usuário')===name);const td=document.createElement('td');td.innerHTML=u?`<button class="admin-action neutral activity-btn" onclick="openAdminUserActivity('${u.id}')">Ver atividade</button>`:'—';tr.appendChild(td)})},0)}
+ const old=window.renderAdminUsers;if(!old)return;
+ window.renderAdminUsers=function(rows){
+   old(rows);
+   setTimeout(()=>{
+     const table=qs('#adminUsers table');if(!table)return;
+     const heads=table.querySelectorAll('thead th');
+     heads.forEach(th=>{if(th.textContent.trim()==='Perfil')th.textContent='Tipo'});
+     qsa('tbody tr',table).forEach((tr,i)=>{
+       const u=(rows||[])[i]; if(!u)return;
+       const cells=tr.querySelectorAll('td');
+       const nameCell=cells[0],typeCell=cells[3];
+       if(typeCell)typeCell.innerHTML=u.cnpj||u.account_type==='empresa'
+         ?'<span class="launch-badge registered">🏢 Empresa</span>'
+         :'<span class="launch-badge person">👤 Pessoa física</span>';
+       if(nameCell&&!nameCell.querySelector('.admin-user-open')){
+         const current=nameCell.innerHTML;
+         nameCell.innerHTML=`<button class="admin-user-open" onclick="openAdminUserActivity('${u.id}')">${current}</button>`;
+       }
+       const actionCell=cells[cells.length-1];
+       if(actionCell&&!actionCell.querySelector('.activity-btn')){
+         actionCell.insertAdjacentHTML('afterbegin',`<button class="admin-action neutral activity-btn" onclick="openAdminUserActivity('${u.id}')">Ver perfil e ofertas</button>`);
+       }
+     });
+   },0);
+ }
 }
-window.openAdminUserActivity=function(id){
+window.openAdminUserActivity=async function(id){
  const u=(window.__adminUsers||[]).find(x=>x.id===id);if(!u)return;
- const props=(window.__adminProposals||[]).filter(p=>p.from_user_id===id||p.offer_owner_id===id||p.user_id===id||p.from_user_email===u.email||p.offer_owner_email===u.email);
- const offers=(window.__adminOffers||[]).filter(o=>o.user_id===id||o.email===u.email);
- const m=ensureModal('adminActivityModal','Atividade do usuário');
- m.querySelector('.launch-modal-head h2').textContent='Atividade — '+(u.display_name||'Usuário');
- m.querySelector('.launch-modal-body').innerHTML=`<div class="activity-summary"><b>${offers.length}</b><span>ofertas</span><b>${props.length}</b><span>propostas relacionadas</span></div><h3>Ofertas publicadas</h3>${offers.length?offers.map(o=>`<div class="activity-item"><b>${esc(o.title||'Oferta')}</b><span>${esc(o.status||'')} · ${money(o.reference_value)}</span></div>`).join(''):'<p class="muted">Nenhuma oferta.</p>'}<h3>Propostas</h3>${props.length?props.map(p=>`<div class="activity-item"><b>${esc(p.offer_title||'Proposta')}</b><span>${esc(p.offered_description||p.message||'')} · ${esc(p.status||'')}</span></div>`).join(''):'<p class="muted">Nenhuma proposta relacionada.</p>'}`;
+ const m=ensureModal('adminActivityModal','Perfil do usuário');
+ m.querySelector('.launch-modal-head h2').textContent='Perfil — '+(u.display_name||u.business_name||'Usuário');
+ m.querySelector('.launch-modal-body').innerHTML='<p class="muted">Carregando ofertas...</p>';
  m.classList.remove('hide');
+ const {data:offers,error}=await sb.from('offers').select('id,title,offer_type,reference_value,looking_for,status,market_scope,created_at').eq('user_id',id).order('created_at',{ascending:false});
+ const type=u.cnpj||u.account_type==='empresa'?'Empresa':'Pessoa física';
+ const verified=u.business_verified?'<span class="launch-badge verified">✓ Empresa verificada</span>':(u.cnpj?'<span class="launch-badge registered">Empresa cadastrada</span>':'');
+ m.querySelector('.launch-modal-body').innerHTML=`
+   <div class="admin-profile-head"><div><h3>${esc(u.business_name||u.display_name||'Usuário')}</h3><p>${esc(u.email||'')}</p></div><div><span class="launch-badge ${type==='Empresa'?'registered':'person'}">${type==='Empresa'?'🏢':'👤'} ${type}</span> ${verified}</div></div>
+   <div class="activity-summary"><b>${(offers||[]).length}</b><span>ofertas publicadas</span><b>${(offers||[]).filter(o=>o.status==='ativo').length}</b><span>ativas</span></div>
+   <h3>Ofertas publicadas</h3>
+   ${error?'<p class="muted">Não foi possível carregar as ofertas.</p>':((offers||[]).length?(offers||[]).map(o=>`<div class="activity-item"><div><b>${esc(o.title||'Oferta')}</b><small class="admin-cell-sub">${o.market_scope==='empresarial'?'🏢 Empresarial':'👤 Pessoal'} · ${esc(o.offer_type||'')}</small></div><div><span>${money(o.reference_value)} · ${esc(o.status||'')}</span><small class="admin-cell-sub">Procura: ${esc(o.looking_for||'—')}</small></div></div>`).join(''):'<p class="muted">Este usuário ainda não publicou nenhuma oferta.</p>')}
+ `;
 }
 function legalNotice(){
  const footer=qs('footer');if(footer&&!footer.querySelector('.launch-legal'))footer.insertAdjacentHTML('beforeend','<div class="launch-legal"><button onclick="openLegal(\'terms\')">Termos de Uso</button><button onclick="openLegal(\'privacy\')">Privacidade</button><span>Privacidade: contato pelo canal oficial da plataforma.</span></div>');
