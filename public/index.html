@@ -1,0 +1,1148 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Permuta PG</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="header-wrap">
+
+    <button class="brand-lockup" onclick="go('home')" aria-label="Permuta PG - Início">
+      <img src="logo.png" alt="Permuta PG" class="brand-logo">
+      <span class="brand-text"><strong>Permuta</strong><b>PG</b></span>
+    </button>
+
+    <nav class="main-nav">
+      <button onclick="go('home')">Início</button>
+      <button onclick="go('explore')">Explorar</button>
+      <button onclick="need('publish')">＋ Publicar</button>
+      <button onclick="need('inbox')">Propostas</button>
+      <button onclick="need('account')">Minha conta</button>
+      <button id="adminNav" class="hide" onclick="need('admin')">Admin</button>
+    </nav>
+
+    <div class="header-actions">
+      <div class="credit" id="badge">Visitante</div>
+      <button id="headerLogin" class="login-btn" onclick="go('auth')">Entrar</button>
+      <button id="headerSignup" class="create-btn" onclick="go('auth')">Criar conta</button>
+      <button id="headerAccount" class="create-btn hide" onclick="go('account')">Minha conta</button>
+    </div>
+
+  </div>
+</header>
+
+<main>
+
+<!-- HOME -->
+<section id="home" class="home-page">
+
+  <div class="hero">
+    <div class="hero-inner">
+
+      <div class="hero-copy">
+        <span class="hero-kicker">BEM-VINDO AO PERMUTA PG</span>
+
+        <h1>
+          Troque o que você tem<br>
+          pelo que <span>você deseja.</span>
+        </h1>
+
+        <p>
+          A plataforma de permutas de Ponta Grossa.<br>
+          Conecte-se, negocie e faça grandes trocas.
+        </p>
+
+        <div class="hero-cta">
+          <button class="cta-primary" onclick="go('explore')">
+            ⌕ &nbsp; Explorar oportunidades
+          </button>
+
+          <button class="cta-secondary" onclick="need('publish')">
+            ＋ &nbsp; Publicar agora
+          </button>
+        </div>
+
+        <div class="hero-trust">
+          <div>
+            <i>↻</i>
+            <p>
+              <b>100% Gratuito</b>
+              <small>para publicar</small>
+            </p>
+          </div>
+
+          <div>
+            <i>⌖</i>
+            <p>
+              <b>Conexão local</b>
+              <small>Ponta Grossa</small>
+            </p>
+          </div>
+
+          <div>
+            <i>♢</i>
+            <p>
+              <b>Trocas seguras</b>
+              <small>contato protegido</small>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <div class="orbit orbit-a"></div>
+        <div class="orbit orbit-b"></div>
+
+        <div class="browser-mock">
+          <div class="browser-top">
+            <span class="mini-logo">↗ <b>Permuta</b> <em>PG</em></span>
+            <span class="mini-nav">
+              Início &nbsp;&nbsp; Explorar &nbsp;&nbsp; + Publicar
+            </span>
+          </div>
+
+          <div class="browser-content">
+            <h4>Explorar oportunidades</h4>
+
+            <div class="browser-search">
+              <div>
+                <small>EU PROCURO</small>
+                <b>PlayStation 5</b>
+              </div>
+
+              <div>
+                <small>EU TENHO</small>
+                <b>iPhone</b>
+              </div>
+            </div>
+
+            <div class="browser-filters">
+              <span>Todos os tipos</span>
+              <span>Diferença: qualquer</span>
+              <span>Mais recentes</span>
+            </div>
+
+            <div class="mock-offer">
+              <div class="mock-offer-copy">
+                <small>OFERECE</small>
+                <h5>PlayStation 5</h5>
+                <strong>R$ 3.000,00</strong>
+                <small>PROCURA</small>
+                <b>iPhone</b>
+              </div>
+
+              <div class="ps5-shape">
+                <span>PS</span>
+                <b>5</b>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phone-mock">
+          <div class="phone-notch"></div>
+          <div class="phone-mini-brand">Permuta <b>PG</b></div>
+          <div class="iphone-shape"><span></span></div>
+
+          <small>OFERECE</small>
+          <strong>iPhone 13</strong>
+          <b>R$ 3.000,00</b>
+
+          <small>PROCURA</small>
+          <strong>PlayStation 5</strong>
+        </div>
+
+        <div class="swap-card">⇄</div>
+        <div class="handshake-card">🤝</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="home-search">
+
+    <div class="search-heading">
+      <span class="search-bubble">⌕</span>
+
+      <div>
+        <h2>Encontre sua permuta ideal</h2>
+        <p>Diga o que você procura e o que você tem para oferecer.</p>
+      </div>
+    </div>
+
+    <div class="home-search-main">
+      <div class="home-field">
+        <label>EU PROCURO</label>
+        <input
+          id="homeWanted"
+          placeholder="Ex: PlayStation 5, iPhone, Mesa, Serviço..."
+        >
+      </div>
+
+      <span class="home-swap">⇄</span>
+
+      <div class="home-field">
+        <label>EU TENHO</label>
+        <input
+          id="homeHave"
+          placeholder="Ex: iPhone, Notebook, Geladeira, Serviço..."
+        >
+      </div>
+    </div>
+
+    <div class="home-filter-row">
+
+      <select id="homeType" class="ui-select" aria-label="Tipo de oferta">
+        <option value="">Todos os tipos</option>
+        <option value="produto">Produto</option>
+        <option value="servico">Serviço</option>
+        <option value="credito_estabelecimento">Crédito no estabelecimento</option>
+        <option value="veiculo">Veículo</option>
+        <option value="imovel">Imóvel</option>
+      </select>
+
+      <select id="homeCash" class="ui-select" aria-label="Diferença em dinheiro">
+        <option value="">Diferença em dinheiro: qualquer</option>
+        <option value="true">Aceita diferença em dinheiro</option>
+        <option value="false">Sem diferença em dinheiro</option>
+      </select>
+
+      <select id="homeLocation" class="ui-select" aria-label="Localização">
+        <option value="Ponta Grossa">Ponta Grossa - PR</option>
+      </select>
+
+      <select id="homeSort" class="ui-select" aria-label="Ordenação">
+        <option value="recent">Mais recentes</option>
+        <option value="low">Menor valor</option>
+        <option value="high">Maior valor</option>
+      </select>
+
+      <button class="search-now" onclick="homeSearch()">
+        ⌕ &nbsp; Buscar oportunidades
+      </button>
+
+    </div>
+  </div>
+
+  <div class="steps-grid">
+
+    <article>
+      <i class="green">↻</i>
+      <div>
+        <h3>Publique gratuitamente</h3>
+        <p>Publique o que você tem e diga o que deseja receber em troca.</p>
+      </div>
+    </article>
+
+    <article>
+      <i class="blue">⌕</i>
+      <div>
+        <h3>Encontre oportunidades</h3>
+        <p>Use nossos filtros inteligentes e encontre trocas compatíveis.</p>
+      </div>
+    </article>
+
+    <article>
+      <i class="purple">◯</i>
+      <div>
+        <h3>Negocie com segurança</h3>
+        <p>Converse, negocie e mantenha seu contato protegido.</p>
+      </div>
+    </article>
+
+    <article>
+      <i class="gold">✓</i>
+      <div>
+        <h3>Troca concluída</h3>
+        <p>Combine os detalhes e finalize sua permuta com confiança.</p>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="opportunities-title">
+    <div>
+      <span>OPORTUNIDADES</span>
+      <h2>Veja o que está disponível agora</h2>
+    </div>
+
+    <button onclick="go('explore')">Ver todas →</button>
+  </div>
+
+  <div id="recent" class="grid home-opportunities"></div>
+
+</section>
+
+
+<!-- AUTENTICAÇÃO -->
+<section id="auth" class="hide">
+
+  <div class="grid">
+
+    <div class="panel">
+      <h2>Entrar</h2>
+
+      <div class="field">
+        <label>E-mail</label>
+        <input id="liEmail">
+      </div>
+
+      <div class="field">
+        <label>Senha</label>
+        <input id="liPass" type="password">
+      </div>
+
+      <button class="p" onclick="login()">Entrar</button>
+
+      <p id="liMsg" class="muted"></p>
+    </div>
+
+    <div class="panel">
+      <h2>Criar conta</h2>
+
+      <div class="field">
+        <label>Perfil</label>
+        <select id="suType">
+          <option value="pessoa">Pessoa</option>
+          <option value="empresa">Empresa / Profissional</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Nome</label>
+        <input id="suName">
+      </div>
+
+      <div class="field">
+        <label>E-mail</label>
+        <input id="suEmail">
+      </div>
+
+      <div class="field">
+        <label>WhatsApp</label>
+        <input id="suPhone">
+      </div>
+
+      <div class="field">
+        <label>Senha</label>
+        <input id="suPass" type="password">
+      </div>
+
+      <label class="legal-check">
+        <input id="terms" type="checkbox" style="width:auto">
+
+        Li e aceito os
+
+        <button
+          type="button"
+          class="legal-link"
+          onclick="openLegal('terms')"
+        >
+          Termos de Uso
+        </button>
+
+        e a
+
+        <button
+          type="button"
+          class="legal-link"
+          onclick="openLegal('privacy')"
+        >
+          Política de Privacidade
+        </button>.
+      </label>
+
+      <div class="actions">
+        <button class="p" onclick="signup()">Criar conta</button>
+      </div>
+
+      <p id="suMsg" class="muted"></p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- EXPLORAR -->
+<section id="explore" class="hide">
+
+  <div class="explore-head">
+    <span class="tag">PERMUTAS EM PONTA GROSSA</span>
+    <h2>🔎 Encontre quem quer trocar</h2>
+
+    <p class="muted">
+      Procure o que você quer e, se quiser, diga também o que tem para oferecer.
+    </p>
+  </div>
+
+  <div class="search-panel">
+
+    <div class="smart-search-grid">
+
+      <div class="field">
+        <label>EU PROCURO</label>
+        <input
+          id="search"
+          placeholder="Ex.: PlayStation 5"
+          oninput="loadOffers()"
+        >
+      </div>
+
+      <div class="swap-arrow">⇄</div>
+
+      <div class="field">
+        <label>EU TENHO</label>
+        <input
+          id="haveSearch"
+          placeholder="Ex.: iPhone 13"
+          oninput="loadOffers()"
+        >
+      </div>
+
+    </div>
+
+    <div class="filter-row">
+
+      <select id="typeFilter" onchange="loadOffers()">
+        <option value="">Todos os tipos</option>
+        <option value="produto">Produto</option>
+        <option value="servico">Serviço</option>
+        <option value="credito_estabelecimento">Crédito no estabelecimento</option>
+        <option value="veiculo">Veículo</option>
+        <option value="imovel">Imóvel</option>
+      </select>
+
+      <select id="cashFilter" onchange="loadOffers()">
+        <option value="">Diferença em dinheiro: qualquer</option>
+        <option value="true">Aceita diferença em dinheiro</option>
+        <option value="false">Sem diferença em dinheiro</option>
+      </select>
+
+      <select id="sortFilter" onchange="loadOffers()">
+        <option value="recent">Mais recentes</option>
+        <option value="low">Menor valor</option>
+        <option value="high">Maior valor</option>
+      </select>
+
+      <button class="s" onclick="clearExploreFilters()">
+        Limpar filtros
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="results-bar">
+    <b id="resultsCount">0 oportunidades</b>
+    <span class="muted">Somente ofertas ativas</span>
+  </div>
+
+  <div id="offers" class="grid"></div>
+
+</section>
+
+
+<!-- PUBLICAR -->
+<section id="publish" class="hide">
+
+  <div class="publish-head">
+    <span class="tag">CRIAR OFERTA</span>
+    <h2>🔄 Publique o que você tem</h2>
+
+    <p class="muted">
+      Publique o que você <b>TEM</b> e diga o que gostaria de
+      <b>RECEBER</b> em troca.
+    </p>
+  </div>
+
+  <div class="panel publish-panel">
+
+    <div class="field">
+      <label>TIPO</label>
+
+      <select id="type">
+        <option value="produto">Produto</option>
+        <option value="servico">Serviço</option>
+        <option value="credito_estabelecimento">Crédito no estabelecimento</option>
+        <option value="veiculo">Veículo</option>
+        <option value="imovel">Imóvel</option>
+      </select>
+    </div>
+
+    <div class="publish-direction">
+
+      <div class="field">
+        <label>O QUE VOCÊ TEM?</label>
+        <input id="title" placeholder="Ex.: PlayStation 5">
+      </div>
+
+      <div class="direction-arrow">→</div>
+
+      <div class="field">
+        <label>O QUE VOCÊ PROCURA?</label>
+        <input id="want" placeholder="Ex.: iPhone 13">
+      </div>
+
+    </div>
+
+    <div class="field">
+      <label>QUANTO VALE APROXIMADAMENTE?</label>
+      <input
+        id="value"
+        type="number"
+        min="1"
+        placeholder="Ex.: 3000"
+      >
+    </div>
+
+    <div class="publish-options">
+
+      <div class="field">
+        <label>ACEITA OUTRAS PROPOSTAS?</label>
+
+        <select id="open">
+          <option value="true">Sim</option>
+          <option value="false">Não</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>ACEITA DIFERENÇA EM DINHEIRO?</label>
+
+        <select id="cash">
+          <option value="true">Sim</option>
+          <option value="false">Não</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="field image-upload-field">
+      <div class="image-upload-head">
+        <label>FOTOS DO ANÚNCIO <span class="optional-label">(OPCIONAL)</span></label>
+        <span id="publishImageCount" class="muted image-count">0/5 fotos</span>
+      </div>
+
+      <label class="image-picker" for="offerImages">
+        <span class="image-picker-icon">📷</span>
+        <strong>Adicionar fotos</strong>
+        <small>Até 5 fotos · JPG, PNG ou WebP · a primeira será a capa</small>
+      </label>
+      <input id="offerImages" class="hide" type="file" accept="image/jpeg,image/png,image/webp" multiple onchange="handlePublishImages(this)">
+      <div id="publishImagePreview" class="image-preview-grid"></div>
+    </div>
+
+    <div class="field">
+      <label>DESCRIÇÃO</label>
+
+      <textarea
+        id="desc"
+        placeholder="Estado, detalhes, modelo, condições da troca..."
+      ></textarea>
+    </div>
+
+    <div class="publish-preview-note">
+      💡 Exemplo:
+      <b>Tenho PlayStation 5</b>
+      →
+      <b>Procuro iPhone 13</b>
+    </div>
+
+    <button id="publishSubmit" class="p publish-submit" onclick="publishOffer()">
+      Publicar oferta
+    </button>
+
+    <p id="pubMsg"></p>
+
+  </div>
+
+</section>
+
+
+<!-- PROPOSTAS -->
+<section id="inbox" class="hide">
+
+  <h2>🤝 Propostas</h2>
+
+  <div class="actions" style="margin-bottom:18px">
+
+    <button
+      id="receivedTab"
+      class="p"
+      onclick="setProposalTab('received')"
+    >
+      Recebidas
+    </button>
+
+    <button
+      id="sentTab"
+      class="s"
+      onclick="setProposalTab('sent')"
+    >
+      Enviadas
+    </button>
+
+  </div>
+
+  <div id="proposalList"></div>
+
+</section>
+
+
+<!-- CONTA -->
+<section id="account" class="hide">
+
+  <div class="row mobile account-head">
+
+    <div>
+      <span class="tag">PAINEL</span>
+      <h2>👤 Minha conta</h2>
+      <p id="profile" class="muted"></p>
+    </div>
+
+    <button class="s" onclick="logout()">Sair</button>
+
+  </div>
+
+  <div class="account-profile-card">
+
+    <div>
+      <span class="tag">SEU PERFIL</span>
+      <div class="account-name" id="accountName">Usuário</div>
+      <div class="muted" id="accountEmail"></div>
+      <div id="accountReputation" class="account-reputation"></div>
+    </div>
+
+    <div class="account-type-pill" id="accountType">
+      Pessoa
+    </div>
+
+  </div>
+
+  <div class="dashboard-grid">
+
+    <div class="dash-card">
+      <div class="dash-icon">📢</div>
+      <div>
+        <div id="activeCount" class="stat">0</div>
+        <span>Ofertas ativas</span>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <div class="dash-icon">✅</div>
+      <div>
+        <div id="completedCount" class="stat">0</div>
+        <span>Permutas concluídas</span>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <div class="dash-icon">🪙</div>
+      <div>
+        <div id="credits" class="stat">0</div>
+        <span>Créditos</span>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <div class="dash-icon">🎁</div>
+      <div>
+        <div id="free" class="stat">0</div>
+        <span>Liberações grátis</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="account-section-head">
+
+    <div>
+      <h3>Minhas ofertas</h3>
+      <p class="muted">
+        Acompanhe suas ofertas e o status de cada uma.
+      </p>
+    </div>
+
+    <button class="p" onclick="go('publish')">
+      + Nova oferta
+    </button>
+
+  </div>
+
+  <div id="mine" class="grid"></div>
+
+  <div class="account-section-head history-head">
+
+    <div>
+      <h3>Histórico de permutas</h3>
+      <p class="muted">
+        Permutas concluídas em que você participou.
+      </p>
+    </div>
+
+  </div>
+
+  <div id="swapHistory"></div>
+
+</section>
+
+
+<!-- ADMIN -->
+<section id="admin" class="hide admin-page">
+
+  <div class="row mobile account-head">
+
+    <div>
+      <span class="tag">ADMINISTRAÇÃO</span>
+      <h2>🛡️ Painel Admin</h2>
+      <p class="muted">
+        Visão administrativa do Permuta PG.
+      </p>
+    </div>
+
+    <button class="s" onclick="go('account')">
+      Voltar à minha conta
+    </button>
+
+  </div>
+
+
+  <!-- RESUMO ADMIN -->
+  <div class="dashboard-grid admin-stats admin-summary-grid">
+
+    <div class="dash-card">
+      <div class="dash-icon">👥</div>
+      <div>
+        <div id="adminUserCount" class="stat">0</div>
+        <span>Usuários</span>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <div class="dash-icon">⛔</div>
+      <div>
+        <div id="adminBlockedCount" class="stat">0</div>
+        <span>Bloqueados</span>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <div class="dash-icon">📢</div>
+      <div>
+        <div id="adminOfferCount" class="stat">0</div>
+        <span>Ofertas</span>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <div class="dash-icon">🟢</div>
+      <div>
+        <div id="adminActiveOfferCount" class="stat">0</div>
+        <span>Ofertas ativas</span>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <div class="dash-icon">🤝</div>
+      <div>
+        <div id="adminProposalCount" class="stat">0</div>
+        <span>Propostas</span>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <div class="dash-icon">⏳</div>
+      <div>
+        <div id="adminPendingProposalCount" class="stat">0</div>
+        <span>Propostas pendentes</span>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <div class="dash-icon">✅</div>
+      <div>
+        <div id="adminCompletedCount" class="stat">0</div>
+        <span>Permutas concluídas</span>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <div class="dash-icon">⚑</div>
+      <div>
+        <div id="adminOpenReportCount" class="stat">0</div>
+        <span>Denúncias abertas</span>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- USUÁRIOS -->
+  <div class="admin-toolbar">
+
+    <div>
+      <h3>Usuários cadastrados</h3>
+      <p class="muted">
+        Nome, e-mail e WhatsApp em uma única visão.
+      </p>
+    </div>
+
+    <input
+      id="adminSearch"
+      placeholder="Buscar nome, e-mail ou WhatsApp..."
+      oninput="filterAdminUsers()"
+    >
+
+  </div>
+
+  <div id="adminUsers"></div>
+
+
+  <!-- OFERTAS -->
+  <div class="admin-toolbar admin-offer-toolbar">
+
+    <div>
+      <h3>Ofertas publicadas</h3>
+      <p class="muted">
+        Acompanhe e modere as ofertas da plataforma.
+      </p>
+    </div>
+
+    <div class="admin-offer-filters">
+
+      <input
+        id="adminOfferSearch"
+        placeholder="Buscar oferta, usuário ou cidade..."
+        oninput="filterAdminOffers()"
+      >
+
+      <select
+        id="adminOfferStatus"
+        onchange="filterAdminOffers()"
+      >
+        <option value="">Todos os status</option>
+        <option value="ativo">Ativas</option>
+        <option value="pausado">Pausadas</option>
+        <option value="concluido">Concluídas</option>
+      </select>
+
+    </div>
+
+  </div>
+
+  <div id="adminOffers"></div>
+
+
+  <!-- PROPOSTAS ADMIN -->
+  <div class="admin-toolbar admin-section-toolbar">
+
+    <div>
+      <h3>Propostas da plataforma</h3>
+      <p class="muted">
+        Acompanhe negociações e o status das propostas.
+      </p>
+    </div>
+
+    <div class="admin-offer-filters">
+
+      <input
+        id="adminProposalSearch"
+        placeholder="Buscar oferta, usuário ou proposta..."
+        oninput="filterAdminProposals()"
+      >
+
+      <select
+        id="adminProposalStatus"
+        onchange="filterAdminProposals()"
+      >
+        <option value="">Todos os status</option>
+        <option value="pendente">Pendentes</option>
+        <option value="aceita">Aceitas</option>
+        <option value="recusada">Recusadas</option>
+        <option value="cancelada">Canceladas</option>
+        <option value="concluida">Concluídas</option>
+      </select>
+
+    </div>
+
+  </div>
+
+  <div id="adminProposals"></div>
+
+
+  <!-- DENÚNCIAS ADMIN -->
+  <div class="admin-toolbar admin-section-toolbar">
+
+    <div>
+      <h3>Denúncias</h3>
+      <p class="muted">
+        Analise denúncias de ofertas e usuários.
+      </p>
+    </div>
+
+    <div class="admin-offer-filters">
+
+      <input
+        id="adminReportSearch"
+        placeholder="Buscar denúncia, usuário ou oferta..."
+        oninput="filterAdminReports()"
+      >
+
+      <select
+        id="adminReportStatus"
+        onchange="filterAdminReports()"
+      >
+        <option value="">Todos os status</option>
+        <option value="aberto">Abertas</option>
+        <option value="analisando">Em análise</option>
+        <option value="resolvido">Resolvidas</option>
+        <option value="arquivado">Arquivadas</option>
+      </select>
+
+    </div>
+
+  </div>
+
+  <div id="adminReports"></div>
+
+</section>
+
+
+<!-- MODAL EDITAR OFERTA -->
+<div id="editModal" class="modal hide">
+
+  <div class="modal-card">
+
+    <div class="row">
+
+      <div>
+        <span class="tag">EDITAR OFERTA</span>
+        <h3>Atualizar oferta</h3>
+      </div>
+
+      <button class="s" onclick="closeEditOffer()">✕</button>
+
+    </div>
+
+    <div class="field">
+      <label>Oferta</label>
+      <input id="editTitle">
+    </div>
+
+    <div class="field">
+      <label>Valor de referência</label>
+      <input id="editValue" type="number">
+    </div>
+
+    <div class="field">
+      <label>Procura</label>
+      <input id="editWant">
+    </div>
+
+    <div class="field">
+      <label>Descrição</label>
+      <textarea id="editDesc"></textarea>
+    </div>
+
+    <div class="field image-upload-field edit-images-field">
+      <div class="image-upload-head">
+        <label>FOTOS</label>
+        <span id="editImageCount" class="muted image-count">0/5 fotos</span>
+      </div>
+      <div id="editExistingImages" class="image-preview-grid"></div>
+      <label class="image-picker compact" for="editOfferImages">
+        <span>📷</span> <strong>Adicionar fotos</strong>
+        <small>Até completar 5 fotos</small>
+      </label>
+      <input id="editOfferImages" class="hide" type="file" accept="image/jpeg,image/png,image/webp" multiple onchange="handleEditImages(this)">
+      <div id="editNewImagePreview" class="image-preview-grid"></div>
+    </div>
+
+    <div class="actions">
+      <button class="p" onclick="saveEditOffer()">
+        Salvar alterações
+      </button>
+
+      <button class="s" onclick="closeEditOffer()">
+        Cancelar
+      </button>
+    </div>
+
+    <p id="editMsg" class="muted"></p>
+
+  </div>
+
+</div>
+
+
+<!-- MODAL GALERIA DE FOTOS -->
+<div id="imageGalleryModal" class="modal hide">
+  <div class="modal-card gallery-modal-card">
+    <div class="gallery-head">
+      <span id="galleryCounter" class="tag">1 / 1</span>
+      <button class="s" onclick="closeOfferGallery()">✕</button>
+    </div>
+    <div class="gallery-main">
+      <button id="galleryPrev" class="gallery-nav prev" onclick="moveGallery(-1)" aria-label="Foto anterior">‹</button>
+      <img id="galleryMainImage" src="" alt="Foto da oferta">
+      <button id="galleryNext" class="gallery-nav next" onclick="moveGallery(1)" aria-label="Próxima foto">›</button>
+    </div>
+    <div id="galleryThumbs" class="gallery-thumbs"></div>
+  </div>
+</div>
+
+<!-- MODAL DENÚNCIA -->
+<div id="reportModal" class="modal hide">
+
+  <div class="modal-card">
+
+    <div class="row">
+
+      <div>
+        <span class="tag">SEGURANÇA</span>
+        <h3>Denunciar oferta</h3>
+      </div>
+
+      <button class="s" onclick="closeReport()">✕</button>
+
+    </div>
+
+    <p class="muted">
+      Informe o motivo. A denúncia será enviada para análise administrativa.
+    </p>
+
+    <div class="field">
+
+      <label>MOTIVO</label>
+
+      <select id="reportReason">
+        <option value="">Selecione...</option>
+        <option value="Conteúdo suspeito ou fraude">
+          Conteúdo suspeito ou fraude
+        </option>
+        <option value="Item ou serviço proibido">
+          Item ou serviço proibido
+        </option>
+        <option value="Informações falsas ou enganosas">
+          Informações falsas ou enganosas
+        </option>
+        <option value="Spam ou anúncio duplicado">
+          Spam ou anúncio duplicado
+        </option>
+        <option value="Comportamento inadequado">
+          Comportamento inadequado
+        </option>
+        <option value="Outro">
+          Outro
+        </option>
+      </select>
+
+    </div>
+
+    <div class="field">
+
+      <label>DETALHES (OPCIONAL)</label>
+
+      <textarea
+        id="reportDetails"
+        placeholder="Explique brevemente o que aconteceu..."
+      ></textarea>
+
+    </div>
+
+    <div class="actions">
+
+      <button class="danger-btn" onclick="submitReport()">
+        Enviar denúncia
+      </button>
+
+      <button class="s" onclick="closeReport()">
+        Cancelar
+      </button>
+
+    </div>
+
+    <p id="reportMsg" class="muted"></p>
+
+  </div>
+
+</div>
+
+
+
+<!-- MODAL AVALIAÇÃO -->
+<div id="reviewModal" class="modal hide">
+  <div class="modal-card review-modal-card">
+    <div class="row">
+      <div><span class="tag">REPUTAÇÃO</span><h3>Avaliar usuário</h3></div>
+      <button class="s" onclick="closeReview()">✕</button>
+    </div>
+    <p class="muted">Como foi sua experiência nesta permuta?</p>
+    <div class="field">
+      <label>NOTA</label>
+      <div id="reviewStars" class="review-stars">★★★★★</div>
+      <select id="reviewRating" onchange="updateReviewStars()">
+        <option value="5">5 — Excelente</option><option value="4">4 — Muito boa</option>
+        <option value="3">3 — Boa</option><option value="2">2 — Ruim</option><option value="1">1 — Muito ruim</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>COMENTÁRIO <span class="optional-label">(OPCIONAL)</span></label>
+      <textarea id="reviewComment" maxlength="500" placeholder="Conte brevemente como foi a negociação..."></textarea>
+    </div>
+    <div class="actions">
+      <button id="reviewSubmit" class="p" onclick="submitReview()">⭐ Enviar avaliação</button>
+      <button class="s" onclick="closeReview()">Cancelar</button>
+    </div>
+    <p id="reviewMsg" class="muted"></p>
+  </div>
+</div>
+
+<!-- MODAL LEGAL -->
+<div id="legalModal" class="modal hide">
+
+  <div class="modal-card legal-modal-card">
+
+    <div class="row">
+
+      <div>
+        <span class="tag">PERMUTA PG</span>
+        <h3 id="legalTitle">Termos</h3>
+      </div>
+
+      <button class="s" onclick="closeLegal()">✕</button>
+
+    </div>
+
+    <div id="legalBody" class="legal-body"></div>
+
+    <div class="actions">
+      <button class="p" onclick="closeLegal()">
+        Entendi
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+</main>
+
+<footer>
+  Permuta PG · Ponta Grossa, PR
+</footer>
+
+<script src="app.js"></script>
+
+</body>
+</html>
