@@ -170,7 +170,7 @@ function moveGallery(step){
 }
 function closeOfferGallery(){$('imageGalleryModal')?.classList.add('hide')}
 
-function go(id){['home','auth','explore','publish','inbox','account','admin'].forEach(x=>{const el=$(x);if(el)el.classList.toggle('hide',x!==id)});if(id==='explore')loadOffers();if(id==='inbox'&&session)loadInbox();if(id==='account'&&session)loadAccount();if(id==='admin'&&session)loadAdmin();scrollTo(0,0)}function need(id){session?go(id):go('auth')}
+function go(id){['home','empresario','auth','explore','publish','inbox','account','admin'].forEach(x=>{const el=$(x);if(el)el.classList.toggle('hide',x!==id)});if(id==='explore')loadOffers();if(id==='inbox'&&session)loadInbox();if(id==='account'&&session)loadAccount();if(id==='admin'&&session)loadAdmin();scrollTo(0,0)}function need(id){session?go(id):go('auth')}
 async function init(){const {data}=await sb.auth.getSession();session=data.session;await hydrate();await loadOffers();sb.auth.onAuthStateChange(async(_,s)=>{session=s;await hydrate()})}
 async function hydrate(){
   if(!session){
